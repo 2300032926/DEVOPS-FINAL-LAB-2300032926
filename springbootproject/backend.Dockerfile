@@ -3,16 +3,14 @@ FROM eclipse-temurin:21-jdk AS builder
 
 WORKDIR /app
 
-# Install git (if not already present)
-RUN apt-get update && apt-get install -y git
+COPY mvnw .          
+COPY .mvn/ .mvn
+COPY pom.xml ./
+COPY src ./src
 
-# Clone your repo directly
-RUN git clone https://github.com/username/repo.git .
-
-# Make mvnw executable
+# Give execute permission for mvnw
 RUN chmod +x mvnw
 
-# Build the project
 RUN ./mvnw clean package -DskipTests
 
 # Stage 2: Run the app
